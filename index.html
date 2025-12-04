@@ -1,0 +1,1113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finale Woche 1 – Klassenliga</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Fredoka+One&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        .bg-animation span {
+            position: absolute;
+            display: block;
+            width: 20px;
+            height: 20px;
+            background: rgba(255, 255, 255, 0.05);
+            animation: move 25s linear infinite;
+            bottom: -150px;
+            border-radius: 50%;
+        }
+        
+        .bg-animation span:nth-child(1) { left: 10%; width: 80px; height: 80px; animation-delay: 0s; }
+        .bg-animation span:nth-child(2) { left: 20%; width: 20px; height: 20px; animation-delay: 2s; animation-duration: 12s; }
+        .bg-animation span:nth-child(3) { left: 30%; width: 60px; height: 60px; animation-delay: 4s; }
+        .bg-animation span:nth-child(4) { left: 40%; width: 40px; height: 40px; animation-delay: 0s; animation-duration: 18s; }
+        .bg-animation span:nth-child(5) { left: 50%; width: 70px; height: 70px; animation-delay: 0s; }
+        .bg-animation span:nth-child(6) { left: 60%; width: 30px; height: 30px; animation-delay: 3s; }
+        .bg-animation span:nth-child(7) { left: 70%; width: 50px; height: 50px; animation-delay: 7s; }
+        .bg-animation span:nth-child(8) { left: 80%; width: 25px; height: 25px; animation-delay: 15s; animation-duration: 45s; }
+        .bg-animation span:nth-child(9) { left: 90%; width: 15px; height: 15px; animation-delay: 2s; animation-duration: 35s; }
+        .bg-animation span:nth-child(10) { left: 5%; width: 90px; height: 90px; animation-delay: 0s; animation-duration: 11s; }
+        
+        @keyframes move {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(-1200px) rotate(720deg); opacity: 0; }
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 15px;
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 20px 0;
+        }
+        
+        .finale-badge {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #1a1a2e;
+            padding: 10px 20px;
+            border-radius: 25px;
+            display: inline-block;
+            margin-bottom: 10px;
+            font-weight: 800;
+            font-size: 0.9rem;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .title {
+            font-family: 'Fredoka One', cursive;
+            font-size: 2rem;
+            background: linear-gradient(135deg, #00d4ff, #7b2ff7, #f107a3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-shadow: 0 0 30px rgba(123, 47, 247, 0.3);
+            margin-bottom: 5px;
+        }
+        
+        .subtitle {
+            font-size: 1rem;
+            color: #a0a0c0;
+            font-weight: 600;
+        }
+        
+        /* Screens */
+        .screen {
+            display: none;
+        }
+        
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* Start Screen */
+        .start-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 24px;
+            padding: 30px 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-top: 20px;
+        }
+        
+        .name-input {
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 1.1rem;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .name-input:focus {
+            outline: none;
+            border-color: #7b2ff7;
+            background: rgba(123, 47, 247, 0.1);
+        }
+        
+        .name-input::placeholder {
+            color: rgba(255,255,255,0.5);
+        }
+        
+        /* Liga Selection */
+        .liga-grid {
+            display: grid;
+            gap: 12px;
+            margin-top: 20px;
+        }
+        
+        .liga-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 18px 20px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+            text-align: left;
+        }
+        
+        .liga-btn:hover {
+            transform: translateX(8px);
+        }
+        
+        .liga-btn.silver {
+            background: linear-gradient(135deg, #c0c0c0, #808080);
+            color: #1a1a2e;
+        }
+        
+        .liga-btn.gold {
+            background: linear-gradient(135deg, #ffd700, #ff8c00);
+            color: #1a1a2e;
+        }
+        
+        .liga-btn.diamond {
+            background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+            color: #fff;
+        }
+        
+        .liga-icon {
+            font-size: 2rem;
+        }
+        
+        .liga-info {
+            flex: 1;
+        }
+        
+        .liga-name {
+            display: block;
+        }
+        
+        .liga-desc {
+            font-size: 0.8rem;
+            font-weight: 400;
+            opacity: 0.8;
+        }
+        
+        /* Rules */
+        .rules-box {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+        
+        .rules-title {
+            font-size: 1rem;
+            color: #00d4ff;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .rules-text {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: #a0a0c0;
+        }
+        
+        /* Game Screen */
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        
+        .home-btn {
+            background: rgba(255,255,255,0.1);
+            border: 2px solid rgba(255,255,255,0.2);
+            color: #fff;
+            padding: 10px 20px;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .home-btn:hover {
+            background: rgba(255,255,255,0.2);
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .progress-info {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .progress-badge {
+            background: rgba(255,255,255,0.1);
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        /* Task Card */
+        .task-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 24px;
+            padding: 25px 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .task-number {
+            font-size: 0.85rem;
+            color: #00d4ff;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .task-text {
+            font-size: 1.2rem;
+            line-height: 1.6;
+            margin-bottom: 20px;
+        }
+        
+        .input-blank {
+            border: none;
+            border-bottom: 3px solid #7b2ff7;
+            background: transparent;
+            color: #fff;
+            padding: 5px 10px;
+            font-size: 1.1rem;
+            width: auto;
+            min-width: 120px;
+            font-family: 'Nunito', sans-serif;
+            text-align: center;
+        }
+        
+        .input-blank:focus {
+            outline: none;
+            border-bottom-color: #00d4ff;
+        }
+        
+        /* Options */
+        .options {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .option-btn {
+            padding: 15px 20px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 16px;
+            background: rgba(255,255,255,0.05);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 1rem;
+            text-align: left;
+            font-family: 'Nunito', sans-serif;
+            font-weight: 600;
+        }
+        
+        .option-btn:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: #7b2ff7;
+        }
+        
+        .option-btn.selected {
+            background: linear-gradient(135deg, #7b2ff7, #f107a3);
+            border-color: #f107a3;
+        }
+        
+        /* Buttons */
+        .submit-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(123, 47, 247, 0.4);
+        }
+        
+        .submit-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        /* Feedback */
+        .feedback {
+            margin-top: 15px;
+            padding: 15px 20px;
+            border-radius: 16px;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .feedback.show {
+            opacity: 1;
+        }
+        
+        .feedback.correct {
+            background: rgba(0, 255, 136, 0.2);
+            color: #00ff88;
+            border: 2px solid #00ff88;
+        }
+        
+        .feedback.wrong {
+            background: rgba(255, 71, 87, 0.2);
+            color: #ff4757;
+            border: 2px solid #ff4757;
+        }
+        
+        /* Certificate Screen */
+        .cert-card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+            border-radius: 24px;
+            padding: 40px 20px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .cert-card.silver {
+            border: 3px solid #c0c0c0;
+        }
+        
+        .cert-card.gold {
+            border: 3px solid #ffd700;
+        }
+        
+        .cert-card.diamond {
+            border: 3px solid #00d4ff;
+        }
+        
+        .cert-icon {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .cert-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+        
+        .cert-name {
+            font-size: 2rem;
+            background: linear-gradient(135deg, #00d4ff, #7b2ff7);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+            margin: 20px 0;
+        }
+        
+        .cert-stats {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 25px 0;
+        }
+        
+        .cert-stat {
+            background: rgba(255,255,255,0.05);
+            padding: 15px;
+            border-radius: 12px;
+        }
+        
+        .cert-stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #00d4ff;
+        }
+        
+        .cert-stat-label {
+            font-size: 0.85rem;
+            color: #a0a0c0;
+            margin-top: 5px;
+        }
+        
+        .download-btn, .restart-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 15px;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .download-btn {
+            background: linear-gradient(135deg, #00ff88, #00d4ff);
+            color: #1a1a2e;
+        }
+        
+        .restart-btn {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+        
+        .download-btn:hover, .restart-btn:hover {
+            transform: translateY(-2px);
+        }
+        
+        @media (max-width: 480px) {
+            .title {
+                font-size: 1.5rem;
+            }
+            
+            .task-text {
+                font-size: 1.1rem;
+            }
+            
+            .cert-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-animation">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div class="finale-badge">🏆 FINALE DER ERSTEN WOCHE</div>
+            <h1 class="title">Klassenliga</h1>
+            <p class="subtitle">40 Aufgaben • Wähle deine Liga</p>
+        </div>
+
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen active">
+            <div class="start-card">
+                <h2 style="margin-bottom: 20px; text-align: center;">Willkommen zum Finale! 🎯</h2>
+                
+                <input type="text" 
+                       id="playerName" 
+                       class="name-input" 
+                       placeholder="Dein Name..."
+                       maxlength="20">
+                
+                <div class="liga-grid">
+                    <button class="liga-btn silver" onclick="startGame('silver')">
+                        <span class="liga-icon">🥈</span>
+                        <div class="liga-info">
+                            <span class="liga-name">Silber-Liga</span>
+                            <div class="liga-desc">Einfacher • Grundlagen</div>
+                        </div>
+                    </button>
+                    
+                    <button class="liga-btn gold" onclick="startGame('gold')">
+                        <span class="liga-icon">🥇</span>
+                        <div class="liga-info">
+                            <span class="liga-name">Gold-Liga</span>
+                            <div class="liga-desc">Mittel • Mehr Details</div>
+                        </div>
+                    </button>
+                    
+                    <button class="liga-btn diamond" onclick="startGame('diamond')">
+                        <span class="liga-icon">💎</span>
+                        <div class="liga-info">
+                            <span class="liga-name">Diamant-Liga</span>
+                            <div class="liga-desc">Schwierig • Komplexe Aufgaben</div>
+                        </div>
+                    </button>
+                </div>
+                
+                <div class="rules-box">
+                    <div class="rules-title">
+                        <span>ℹ️</span>
+                        <span>Spielregeln</span>
+                    </div>
+                    <div class="rules-text">
+                        • 40 Aufgaben pro Liga<br>
+                        • 2 Punkte beim ersten Versuch ✓<br>
+                        • 1 Punkt bei Wiederholung 🔄<br>
+                        • Mindestens 75% zum Bestehen<br>
+                        • Zertifikat zum Download 📜
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <div class="game-header">
+                <button class="home-btn" id="homeBtn" onclick="confirmHome()">🏠 Startseite</button>
+                <div class="progress-info">
+                    <div class="progress-badge">📊 <span id="taskCounter">1/40</span></div>
+                    <div class="progress-badge">⭐ <span id="pointsDisplay">0</span></div>
+                </div>
+            </div>
+            
+            <div class="task-card">
+                <div class="task-number" id="taskNumber">Aufgabe 1 von 40</div>
+                <div class="task-text" id="taskText"></div>
+                <div id="answerArea"></div>
+            </div>
+            
+            <button class="submit-btn" id="submitBtn" onclick="checkAnswer()">Antwort prüfen</button>
+            <div class="feedback" id="feedback"></div>
+        </div>
+
+        <!-- Certificate Screen -->
+        <div id="certScreen" class="screen">
+            <div class="cert-card" id="certCard">
+                <div class="cert-icon" id="certIcon">🏆</div>
+                <h2 class="cert-title">Finale bestanden! ✅</h2>
+                <div class="cert-name" id="certName">Name</div>
+                
+                <div class="cert-stats">
+                    <div class="cert-stat">
+                        <div class="cert-stat-value" id="certPoints">0</div>
+                        <div class="cert-stat-label">Punkte</div>
+                    </div>
+                    <div class="cert-stat">
+                        <div class="cert-stat-value" id="certPercent">0%</div>
+                        <div class="cert-stat-label">Erfolgsquote</div>
+                    </div>
+                    <div class="cert-stat">
+                        <div class="cert-stat-value" id="certLiga">—</div>
+                        <div class="cert-stat-label">Liga</div>
+                    </div>
+                    <div class="cert-stat">
+                        <div class="cert-stat-value" id="certDate">—</div>
+                        <div class="cert-stat-label">Datum</div>
+                    </div>
+                </div>
+                
+                <button class="download-btn" onclick="downloadCertificate()">📜 Zertifikat herunterladen</button>
+                <button class="restart-btn" onclick="restartGame()">🔄 Nochmal spielen</button>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="certCanvas" width="800" height="600" style="display:none;"></canvas>
+
+    <script src="https://gc.zgo.at/count.js" data-goatcounter="https://aguitoo.goatcounter.com/count" async></script>
+
+    <script>
+        // Aufgaben für jede Liga
+        const tasksData = {
+            silver: [
+                { text: 'Als Kind ___ ich Astronaut werden. (Mein Traumberuf)', type: 'fill', answer: 'wollte', alt: ['wolte'] },
+                { text: 'Wähle: Tom ___ als Jugendlicher nicht schwimmen, weil er Angst vor Wasser hatte.', type: 'choice', options: ['konnte', 'konntest', 'können', 'kann'], answer: 'konnte' },
+                { text: 'Ergänze: Es ist wichtig, ___ man viel übt.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: '___ Sie keine Zeit haben, können wir später sprechen.', type: 'fill', answer: 'Wenn', alt: ['wenn'] },
+                { text: 'Der Arzt sagt: "Sie sollten ___ regelmäßig bewegen."', type: 'fill', answer: 'sich', alt: [] },
+                { text: 'Wähle: Ich interessiere mich ___ Sport.', type: 'choice', options: ['für', 'über', 'von', 'mit'], answer: 'für' },
+                { text: 'Wir ___ als Kinder früh aufstehen, weil die Schule um 8 Uhr anfing.', type: 'fill', answer: 'mussten', alt: ['mußten'] },
+                { text: 'Wähle: Ich denke ___ die Prüfung.', type: 'choice', options: ['an', 'auf', 'für', 'über'], answer: 'an' },
+                { text: 'Ich glaube, ___ Deutsch lernen wichtig ist.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: 'Lisa ___ als Kind nicht Fahrrad fahren. Erst mit 8 Jahren hat sie es gelernt.', type: 'fill', answer: 'konnte', alt: ['konte'] },
+                { text: 'Wähle: Anna freut sich ___ den Urlaub.', type: 'choice', options: ['auf', 'für', 'über', 'von'], answer: 'auf' },
+                { text: '___ ich Fieber habe, bleibe ich zu Hause.', type: 'fill', answer: 'Wenn', alt: ['wenn'] },
+                { text: 'Wähle: Ich spreche ___ meinem Chef.', type: 'choice', options: ['mit', 'über', 'von', 'für'], answer: 'mit' },
+                { text: 'Es tut mir leid, ___ ich zu spät bin.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: 'Als Jugendlicher ___ ich keinen Führerschein machen. Erst mit 18.', type: 'fill', answer: 'durfte', alt: ['dürfte', 'konnte', 'konte'] },
+                { text: 'Wähle: Max wartet ___ seine Freundin.', type: 'choice', options: ['auf', 'für', 'an', 'über'], answer: 'auf' },
+                { text: 'Meine Eltern erlaubten es: Ich ___ früher jeden Tag ins Schwimmbad gehen.', type: 'fill', answer: 'durfte', alt: ['dürfte'] },
+                { text: 'Sarah ___ als Kind immer ihre Hausaufgaben machen, bevor sie spielen durfte.', type: 'fill', answer: 'musste', alt: ['mußte'] },
+                { text: 'Wähle: Wir sprechen ___ das Wetter.', type: 'choice', options: ['über', 'von', 'für', 'mit'], answer: 'über' },
+                { text: 'Es ist schön, ___ du Zeit hast.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: 'Ich ___ als Kind noch nicht lesen. Erst in der ersten Klasse.', type: 'fill', answer: 'konnte', alt: ['konte'] },
+                { text: 'Wähle: Maria ärgert sich ___ den Fehler.', type: 'choice', options: ['über', 'auf', 'für', 'von'], answer: 'über' },
+                { text: '___ du Hunger hast, gibt es Essen im Kühlschrank.', type: 'fill', answer: 'Wenn', alt: ['wenn'] },
+                { text: 'Er ___ früher sehr gut singen. Jetzt nicht mehr.', type: 'fill', answer: 'konnte', alt: ['konte'] },
+                { text: 'Wähle: Ich freue mich ___ das Wochenende.', type: 'choice', options: ['auf', 'über', 'für', 'an'], answer: 'auf' },
+                { text: 'Nina ___ als Kind immer ihr Zimmer aufräumen, bevor sie ausgehen durfte.', type: 'fill', answer: 'musste', alt: ['mußte'] },
+                { text: 'Ich hoffe, ___ alles gut wird.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: 'Wähle: Er träumt ___ einem neuen Auto.', type: 'choice', options: ['von', 'über', 'für', 'an'], answer: 'von' },
+                { text: 'Als Kind ___ ich jeden Abend um 8 Uhr ins Bett. Das war die Regel.', type: 'fill', answer: 'musste', alt: ['mußte'] },
+                { text: '___ es regnet, nehme ich einen Regenschirm.', type: 'fill', answer: 'Wenn', alt: ['wenn'] },
+                { text: 'Wähle: Die Nachbarin beschwert sich ___ die Lautstärke.', type: 'choice', options: ['über', 'auf', 'für', 'von'], answer: 'über' },
+                { text: 'Ich ___ früher nicht so früh aufstehen. Jetzt muss ich um 6 Uhr aufstehen.', type: 'fill', answer: 'musste', alt: ['mußte'] },
+                { text: 'Paul denkt, ___ die Prüfung schwer ist.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: 'Wähle: Ich erinnere mich ___ meinen ersten Schultag.', type: 'choice', options: ['an', 'auf', 'über', 'für'], answer: 'an' },
+                { text: 'Als Kind ___ ich immer draußen spielen. Meine Eltern erlaubten es.', type: 'fill', answer: 'durfte', alt: ['dürfte'] },
+                { text: 'Wähle: Er hat Angst ___ der Prüfung.', type: 'choice', options: ['vor', 'über', 'für', 'an'], answer: 'vor' },
+                { text: 'Julia ___ früher nicht alleine einkaufen. Sie war noch zu jung.', type: 'fill', answer: 'durfte', alt: ['dürfte'] },
+                { text: 'Ich finde, ___ Sport wichtig ist.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: 'Wähle den richtigen Satz:', type: 'choice', options: ['Wenn du fertig bist, können wir gehen.', 'Wenn fertig du bist, wir können gehen.', 'Du bist fertig wenn, gehen wir können.', 'Fertig bist du wenn, können gehen wir.'], answer: 'Wenn du fertig bist, können wir gehen.' },
+                { text: '___ du fertig bist, können wir gehen.', type: 'fill', answer: 'Wenn', alt: ['wenn'] }
+            ],
+            gold: [
+                { text: 'Wähle: Als Kinder ___ wir immer pünktlich nach Hause kommen, weil unsere Eltern streng waren.', type: 'choice', options: ['mussten', 'müssen', 'mußten', 'musten'], answer: 'mussten' },
+                { text: 'Bilde einen Satz: Ich finde wichtig. Man sollte täglich Sport machen. → Ich finde, ___ man täglich Sport machen sollte.', type: 'fill', answer: 'dass', alt: ['daß'] },
+                { text: 'Ergänze: Ich freue mich auf die Ferien. → Ich freue mich sehr ___.', type: 'fill', answer: 'darauf', alt: [] },
+                { text: 'Ratschlag: Wenn du Kopfschmerzen hast, ___ du eine Tablette nehmen.', type: 'fill', answer: 'solltest', alt: ['soltest'] },
+                { text: 'Wähle: Tom erinnert ___ seine Kindheit.', type: 'choice', options: ['sich an', 'sich auf', 'sich für', 'sich über'], answer: 'sich an' },
+                { text: 'Lisa ___ (sollen) gestern um 8 Uhr da sein, aber sie kam zu spät.', type: 'fill', answer: 'sollte', alt: ['solte'] },
+                { text: '___ Sie online reserviert haben, bekommen Sie eine Bestätigung per E-Mail.', type: 'fill', answer: 'Wenn', alt: ['wenn'] },
+                { text: 'Wähle: Ich träume ___ einer Weltreise.', type: 'choice', options: ['von', 'über', 'für', 'an'], answer: 'von' },
+                { text: 'Ergänze: Ich denke an meine Schulzeit. → Ich denke ___ gern zurück.', type: 'fill', answer: 'daran', alt: [] },
+                { text: 'Anna ___ (müssen) gestern zum Arzt gehen, weil sie krank war.', type: 'fill', answer: 'musste', alt: ['mußte'] },
+                { text: 'Wähle: Die Nachbarin beschwert ___ die Lautstärke der Musik.', type: 'choice', options: ['sich über', 'sich an', 'sich für', 'sich auf'], answer: 'sich über' },
+                { text: 'Ratschlag: Wenn du müde bist, ___ du früher schlafen gehen.', type: 'fill', answer: 'solltest', alt: ['soltest'] },
+                { text: 'Es ist schön, ___ wir heute gutes Wetter haben.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: 'Als Kind ___ (wollen) ich Lehrerin werden. Das war mein Traum.', type: 'fill', answer: 'wollte', alt: ['wolte'] },
+                { text: 'Wähle: Max hat Lust ___ Tanzen.', type: 'choice', options: ['auf', 'für', 'von', 'an'], answer: 'auf' },
+                { text: 'Ratschlag: Wenn ihr Fragen habt, ___ ihr mich jederzeit anrufen.', type: 'fill', answer: 'könnt', alt: ['könt'] },
+                { text: 'Ergänze: Ich ärgere mich über den Fehler. → Ich ärgere mich ___.', type: 'fill', answer: 'darüber', alt: [] },
+                { text: 'Wähle: Sarah freut ___ ihren Erfolg bei der Prüfung.', type: 'choice', options: ['sich über', 'sich auf', 'sich für', 'sich an'], answer: 'sich über' },
+                { text: 'Der Arzt sagt: Paul ___ (sollen) mehr Sport machen.', type: 'fill', answer: 'sollte', alt: ['solte'] },
+                { text: 'Ich glaube, ___ er morgen kommt.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: 'Wähle: Wir sprechen ___ unsere Pläne für das Wochenende.', type: 'choice', options: ['über', 'von', 'für', 'mit'], answer: 'über' },
+                { text: 'Als Jugendlicher ___ (dürfen) ich bis 22 Uhr wegbleiben.', type: 'fill', answer: 'durfte', alt: ['dürfte'] },
+                { text: 'Ergänze: Maria wartet auf den Bus. → Maria wartet ___.', type: 'fill', answer: 'darauf', alt: [] },
+                { text: '___ Sie Hilfe brauchen, sagen Sie bitte Bescheid.', type: 'fill', answer: 'Wenn', alt: ['wenn'] },
+                { text: 'Wähle: Ich interessiere ___ klassische Musik.', type: 'choice', options: ['mich für', 'mich an', 'mich über', 'mich auf'], answer: 'mich für' },
+                { text: 'Tom ___ (können) als Kind sehr gut Klavier spielen.', type: 'fill', answer: 'konnte', alt: ['konte'] },
+                { text: 'Es ist wichtig, ___ man pünktlich ist.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: 'Wähle: Julia denkt ___ ihren Urlaub in Italien.', type: 'choice', options: ['an', 'auf', 'für', 'über'], answer: 'an' },
+                { text: 'Ratschlag: Wenn es kalt ist, ___ du eine Jacke anziehen.', type: 'fill', answer: 'solltest', alt: ['soltest'] },
+                { text: 'Ergänze: Max freut sich auf das Fest. → Max freut sich sehr ___.', type: 'fill', answer: 'darauf', alt: [] },
+                { text: 'Wir ___ (müssen) gestern länger arbeiten, weil viel zu tun war.', type: 'fill', answer: 'mussten', alt: ['mußten'] },
+                { text: 'Wähle: Nina kümmert ___ ihre kranke Mutter.', type: 'choice', options: ['sich um', 'sich an', 'sich für', 'sich über'], answer: 'sich um' },
+                { text: 'Als Kind ___ (wollen) Paul Feuerwehrmann werden.', type: 'fill', answer: 'wollte', alt: ['wolte'] },
+                { text: 'Ich hoffe, ___ du bald gesund wirst.', type: 'fill', answer: 'dass', alt: ['das'] },
+                { text: 'Wähle: Wir unterhalten ___ die Nachrichten.', type: 'choice', options: ['uns über', 'uns an', 'uns für', 'uns auf'], answer: 'uns über' },
+                { text: 'Ergänze: Lisa denkt an ihre Prüfung. → Lisa denkt oft ___.', type: 'fill', answer: 'daran', alt: [] },
+                { text: '___ du Zeit hast, können wir uns heute treffen.', type: 'fill', answer: 'Wenn', alt: ['wenn'] },
+                { text: 'Ich ___ (dürfen) früher nicht so spät fernsehen. Nur bis 20 Uhr.', type: 'fill', answer: 'durfte', alt: ['dürfte'] },
+                { text: 'Wähle: Tom hat Angst ___ der Zukunft.', type: 'choice', options: ['vor', 'über', 'für', 'an'], answer: 'vor' },
+                { text: 'Anna meint, ___ die Aufgabe zu schwer ist.', type: 'fill', answer: 'dass', alt: ['das'] }
+            ],
+            diamond: [
+                { text: 'Als Kind konnte ich nicht schwimmen, aber ich ___ es für die Schule lernen.', type: 'choice', options: ['musste', 'mußte', 'wollte', 'durfte'], answer: 'musste' },
+                { text: 'Korrigiere: Welches Wort ist falsch? "Wenn Sie Zeit habt, können wir anfangen."', type: 'choice', options: ['habt', 'können', 'wir', 'anfangen'], answer: 'habt' },
+                { text: 'Lisa ___ ___ ihr neues Auto. (sich freuen über)', type: 'fill', answer: 'freut sich über', alt: ['hat sich gefreut über'] },
+                { text: 'Wähle: Wenn keine Bestätigung kommt, ...', type: 'choice', options: ['dann können Sie anrufen.', 'können Sie anrufen.', 'Sie können anrufen.', 'anrufen Sie können.'], answer: 'dann können Sie anrufen.' },
+                { text: 'Ich ärgere mich über die Verspätung des Zuges. → Ich ärgere mich ___.', type: 'fill', answer: 'darüber', alt: [] },
+                { text: 'Als Jugendlicher durfte ich nicht rauchen, aber ich ___ es auch nicht.', type: 'choice', options: ['wollte', 'wolte', 'musste', 'konnte'], answer: 'wollte' },
+                { text: 'Ratschlag: Wenn Sie Probleme haben, sollten Sie ___ ___ einen Experten wenden.', type: 'fill', answer: 'sich an', alt: [] },
+                { text: 'Wähle: Ich finde wichtig, dass man sich regelmäßig bewegt ___ dass man gesund isst.', type: 'choice', options: ['und', 'aber', 'oder', 'denn'], answer: 'und' },
+                { text: 'Wähle: Nachdem Anna ___ beim Sportverein ___ hat, kann sie am Montag beginnen.', type: 'choice', options: ['sich angemeldet', 'angemeldet sich', 'sich melden an', 'anmelden sich'], answer: 'sich angemeldet' },
+                { text: 'Am Telefon: Tut mir leid, Frau Müller ist nicht da. ___ sie zurückrufen?', type: 'fill', answer: 'Soll', alt: ['soll'] },
+                { text: 'Wähle die beste Formulierung: Ich interessiere mich für Geschichte.', type: 'choice', options: ['Ich interessiere mich dafür sehr.', 'Ich interessiere mir dafür sehr.', 'Ich interessiere dafür mich sehr.', 'Ich dafür interessiere mich sehr.'], answer: 'Ich interessiere mich dafür sehr.' },
+                { text: 'Tom musste gestern früh aufstehen, aber er ___ noch schlafen.', type: 'choice', options: ['wollte', 'wolte', 'musste', 'sollte'], answer: 'wollte' },
+                { text: 'Ich denke ___ meine Zukunft und freue mich darauf.', type: 'fill', answer: 'an', alt: [] },
+                { text: 'Ratschlag: Wenn du gesund bleiben willst, solltest du ___ gesund ernähren.', type: 'fill', answer: 'dich', alt: [] },
+                { text: 'Wähle den richtigen Satz:', type: 'choice', options: ['Es tut mir leid, dass ich gestern nicht kommen konnte.', 'Es tut mir leid, das ich gestern nicht kommen konnte.', 'Es tut mir leid, daß ich gestern nicht kommen kann.', 'Es tut mir leid, wenn ich gestern nicht kommen konnte.'], answer: 'Es tut mir leid, dass ich gestern nicht kommen konnte.' },
+                { text: 'Als Kind durfte ich nicht fernsehen, deshalb ___ ich meine Lieblingsserie nicht sehen.', type: 'choice', options: ['konnte', 'konte', 'musste', 'durfte'], answer: 'konnte' },
+                { text: 'Julia erinnert sich ___ ihre Schulzeit und denkt oft daran.', type: 'fill', answer: 'an', alt: [] },
+                { text: 'Wähle die korrekte Konstruktion: Wenn Sie ein Hotelzimmer reservieren möchten, ...', type: 'choice', options: ['dann können Sie online buchen.', 'können Sie online buchen dann.', 'dann Sie können online buchen.', 'Sie dann online können buchen.'], answer: 'dann können Sie online buchen.' },
+                { text: 'Max sollte mehr lernen, aber er ___ lieber mit Freunden spielen.', type: 'choice', options: ['wollte', 'wolte', 'musste', 'sollte'], answer: 'wollte' },
+                { text: 'Ich freue mich ___ den Urlaub. → Ich freue mich schon sehr darauf.', type: 'fill', answer: 'auf', alt: [] },
+                { text: 'Wähle den richtigen Satz:', type: 'choice', options: ['Wenn man erfolgreich sein will, muss man viel arbeiten.', 'Wen man erfolgreich sein will, muss man viel arbeiten.', 'Wenn man erfolgreich sein will, muß man viel arbeiten.', 'Als man erfolgreich sein will, muss man viel arbeiten.'], answer: 'Wenn man erfolgreich sein will, muss man viel arbeiten.' },
+                { text: 'Als Schüler mussten wir Hausaufgaben machen, aber wir ___ danach draußen spielen.', type: 'choice', options: ['durften', 'dürften', 'mussten', 'konnten'], answer: 'durften' },
+                { text: 'Nina spricht ___ ihre Probleme. → Nina spricht oft darüber.', type: 'fill', answer: 'über', alt: [] },
+                { text: 'Korrigiere: "Wenn er Zeit hat haben, dann er kann kommen." → Wenn er Zeit ___, dann kann er kommen.', type: 'fill', answer: 'hat', alt: [] },
+                { text: 'Wähle: Es ist wichtig, dass man ___ gut vorbereitet.', type: 'choice', options: ['sich', '—', 'uns', 'euch'], answer: 'sich' },
+                { text: 'Früher konnte ich nicht kochen, deshalb ___ ich es von meiner Mutter lernen.', type: 'choice', options: ['musste', 'mußte', 'wollte', 'durfte'], answer: 'musste' },
+                { text: 'Tom wartet ___ seine Freundin und ärgert sich darüber, dass sie zu spät ist.', type: 'fill', answer: 'auf', alt: [] },
+                { text: 'Am Telefon: Wenn Sie Fragen haben, können Sie ___ ___ unseren Kundenservice wenden.', type: 'fill', answer: 'sich an', alt: [] },
+                { text: 'Wähle: Als Kind musste ich ___ meine Hausaufgaben kümmern.', type: 'choice', options: ['mich um', 'mir um', 'mir über', 'mich für'], answer: 'mich um' },
+                { text: 'Anna interessiert sich ___ Kunst und spricht gern darüber.', type: 'fill', answer: 'für', alt: [] },
+                { text: 'Wähle den richtigen Satz:', type: 'choice', options: ['Es ist schön, dass du Zeit hast, aber schade, dass wir nicht länger bleiben können.', 'Es ist schön, das du Zeit hast, aber schade, das wir nicht länger bleiben können.', 'Es ist schön, dass du Zeit hast, aber schade, wenn wir nicht länger bleiben können.', 'Es ist schön, wenn du Zeit hast, aber schade, dass wir nicht länger bleiben können.'], answer: 'Es ist schön, dass du Zeit hast, aber schade, dass wir nicht länger bleiben können.' },
+                { text: 'Als Teenager wollte ich unabhängig sein, aber ich ___ noch bei meinen Eltern wohnen.', type: 'choice', options: ['musste', 'mußte', 'wollte', 'durfte'], answer: 'musste' },
+                { text: 'Wähle: Paul kümmert ___ seine kranke Mutter.', type: 'choice', options: ['sich um', 'sich an', 'sich für', 'sich über'], answer: 'sich um' },
+                { text: 'Anmeldung: Wenn Sie sich beim Kurs anmelden möchten, ___ Sie das Online-Formular ausfüllen.', type: 'fill', answer: 'sollten', alt: ['solten'] },
+                { text: 'Wähle: Ich sollte gestern lernen, aber ich wollte lieber ausgehen, deshalb ___ ich heute nicht alle Fragen beantworten.', type: 'choice', options: ['kann', 'konnte', 'können', 'könte'], answer: 'kann' },
+                { text: 'Lisa träumt ___ einem Haus am Meer. → Lisa spricht oft davon.', type: 'fill', answer: 'von', alt: [] },
+                { text: 'Wähle: Wenn keine Verbesserung eintritt, sollten Sie sich ___ einen Arzt wenden.', type: 'choice', options: ['an', 'auf', 'über', 'für'], answer: 'an' },
+                { text: 'Max ärgert sich über die Verspätung, freut sich aber ___, dass er noch eine Chance bekommt.', type: 'fill', answer: 'darüber', alt: [] },
+                { text: 'Wähle: Als Kind musste ich Gemüse essen, aber ich wollte es nicht, deshalb ___ ich manchmal Süßigkeiten haben.', type: 'choice', options: ['durfte', 'dürfte', 'konnte', 'musste'], answer: 'durfte' },
+                { text: 'Wenn Sie sich nicht entscheiden können, ___ Sie mehr Zeit nehmen.', type: 'fill', answer: 'sollten', alt: ['solten'] }
+            ]
+        };
+
+        let playerName = '';
+        let currentLiga = '';
+        let tasks = [];
+        let currentTaskIndex = 0;
+        let totalPoints = 0;
+        let completedTasks = 0;
+        let attempts = {};
+        let selectedAnswer = '';
+        let currentTimeout = null;
+
+        // Shuffle-Funktion für Antworten - DREIFACH für maximale Randomisierung!
+        function shuffleArray(array) {
+            let shuffled = [...array];
+            
+            // Shuffle dreimal für maximale Randomisierung
+            for (let round = 0; round < 3; round++) {
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+            }
+            
+            return shuffled;
+        }
+
+        function showScreen(screenId) {
+            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+            document.getElementById(screenId).classList.add('active');
+        }
+
+        function startGame(liga) {
+            playerName = document.getElementById('playerName').value.trim();
+            if (!playerName) {
+                alert('Bitte gib deinen Namen ein!');
+                return;
+            }
+
+            currentLiga = liga;
+            tasks = [...tasksData[liga]];
+            
+            currentTaskIndex = 0;
+            totalPoints = 0;
+            completedTasks = 0;
+            attempts = {};
+            
+            showScreen('gameScreen');
+            document.getElementById('homeBtn').classList.remove('hidden');
+            loadTask();
+        }
+
+        function loadTask() {
+            const task = tasks[currentTaskIndex];
+            const answerArea = document.getElementById('answerArea');
+            const feedback = document.getElementById('feedback');
+            
+            // Feedback SOFORT und aggressiv löschen
+            feedback.style.display = 'none';
+            feedback.className = 'feedback';
+            feedback.innerHTML = '';
+            setTimeout(() => {
+                feedback.style.display = '';
+            }, 10);
+            
+            document.getElementById('taskNumber').textContent = `Aufgabe ${currentTaskIndex + 1} von ${tasks.length}`;
+            document.getElementById('taskCounter').textContent = `${currentTaskIndex + 1}/${tasks.length}`;
+            document.getElementById('pointsDisplay').textContent = totalPoints;
+            
+            selectedAnswer = '';
+            
+            // Task text with blank
+            document.getElementById('taskText').innerHTML = task.text;
+            
+            // Answer area
+            if (task.type === 'fill') {
+                answerArea.innerHTML = '<input type="text" class="input-blank" id="userAnswer" placeholder="...">';
+                setTimeout(() => {
+                    const input = document.getElementById('userAnswer');
+                    if (input) {
+                        input.focus();
+                        input.addEventListener('keypress', (e) => {
+                            if (e.key === 'Enter') checkAnswer();
+                        });
+                    }
+                }, 100);
+            } else if (task.type === 'choice') {
+                // Antworten shuffeln für jede Aufgabe
+                let shuffledOptions = shuffleArray(task.options);
+                
+                // WICHTIG: Wenn die richtige Antwort an erster Stelle ist, verschiebe sie!
+                if (shuffledOptions[0] === task.answer) {
+                    // Verschiebe die richtige Antwort an eine zufällige Position (nicht 0)
+                    const newPos = 1 + Math.floor(Math.random() * (shuffledOptions.length - 1));
+                    [shuffledOptions[0], shuffledOptions[newPos]] = [shuffledOptions[newPos], shuffledOptions[0]];
+                }
+                
+                let html = '<div class="options">';
+                shuffledOptions.forEach(opt => {
+                    html += `<button class="option-btn" onclick="selectOption('${opt.replace(/'/g, "\\'")}')">${opt}</button>`;
+                });
+                html += '</div>';
+                answerArea.innerHTML = html;
+            }
+        }
+
+        function selectOption(option) {
+            selectedAnswer = option;
+            document.querySelectorAll('.option-btn').forEach(btn => {
+                btn.classList.remove('selected');
+                if (btn.textContent === option) {
+                    btn.classList.add('selected');
+                }
+            });
+        }
+
+        function checkAnswer() {
+            const task = tasks[currentTaskIndex];
+            const feedback = document.getElementById('feedback');
+            let userAnswer = '';
+
+            if (task.type === 'fill') {
+                const input = document.getElementById('userAnswer');
+                if (input) userAnswer = input.value.trim();
+            } else {
+                userAnswer = selectedAnswer;
+            }
+
+            if (!userAnswer) {
+                feedback.innerHTML = '⚠️ Bitte gib eine Antwort ein!';
+                feedback.className = 'feedback show wrong';
+                return;
+            }
+
+            // Check answer
+            let isCorrect = false;
+            if (task.type === 'fill') {
+                isCorrect = userAnswer.toLowerCase() === task.answer.toLowerCase();
+                if (!isCorrect && task.alt) {
+                    isCorrect = task.alt.some(a => userAnswer.toLowerCase() === a.toLowerCase());
+                }
+            } else {
+                isCorrect = userAnswer === task.answer;
+            }
+
+            const taskKey = currentTaskIndex;
+            if (!attempts[taskKey]) attempts[taskKey] = 0;
+            attempts[taskKey]++;
+
+            if (isCorrect) {
+                const points = attempts[taskKey] === 1 ? 2 : 1;
+                totalPoints += points;
+                feedback.innerHTML = `✅ Richtig! +${points} Punkt${points > 1 ? 'e' : ''}`;
+                feedback.className = 'feedback show correct';
+                completedTasks++;
+                
+                // Automatisch zur nächsten Aufgabe
+                currentTimeout = setTimeout(() => {
+                    nextTask();
+                }, 400);
+            } else {
+                feedback.innerHTML = `❌ Falsch. Richtig wäre: <strong>${task.answer}</strong>`;
+                feedback.className = 'feedback show wrong';
+                
+                // Nach 2 Versuchen weitergehen
+                if (attempts[taskKey] >= 2) {
+                    feedback.innerHTML += '<br>Du bekommst noch eine Chance am Ende!';
+                    currentTimeout = setTimeout(() => {
+                        nextTask();
+                    }, 600);
+                }
+            }
+
+            document.getElementById('pointsDisplay').textContent = totalPoints;
+        }
+
+        function nextTask() {
+            currentTaskIndex++;
+            
+            if (currentTaskIndex >= tasks.length) {
+                showCertificate();
+            } else {
+                loadTask();
+            }
+        }
+
+        function showCertificate() {
+            showScreen('certScreen');
+            
+            const maxPoints = tasks.length * 2;
+            const percentage = Math.round((totalPoints / maxPoints) * 100);
+            const passed = percentage >= 75;
+            
+            const certCard = document.getElementById('certCard');
+            certCard.className = `cert-card ${currentLiga}`;
+            
+            document.getElementById('certIcon').textContent = passed ? (currentLiga === 'silver' ? '🥈' : currentLiga === 'gold' ? '🥇' : '💎') : '😢';
+            document.getElementById('certName').textContent = playerName;
+            document.getElementById('certPoints').textContent = totalPoints;
+            document.getElementById('certPercent').textContent = percentage + '%';
+            document.getElementById('certLiga').textContent = currentLiga === 'silver' ? 'Silber' : currentLiga === 'gold' ? 'Gold' : 'Diamant';
+            document.getElementById('certDate').textContent = new Date().toLocaleDateString('de-DE');
+            
+            document.querySelector('.cert-title').textContent = passed ? 'Finale bestanden! ✅' : 'Leider nicht bestanden ❌';
+            document.querySelector('.cert-title').style.color = passed ? '#00ff88' : '#ff4757';
+            document.querySelector('.download-btn').style.display = passed ? 'block' : 'none';
+            
+            if (!passed) {
+                document.querySelector('.restart-btn').textContent = '🔄 Nochmal versuchen (75% benötigt)';
+            }
+        }
+
+        function downloadCertificate() {
+            const canvas = document.getElementById('certCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size
+            canvas.width = 800;
+            canvas.height = 600;
+            
+            const maxPoints = tasks.length * 2;
+            const percentage = Math.round((totalPoints / maxPoints) * 100);
+            
+            // Background
+            const gradient = ctx.createLinearGradient(0, 0, 800, 600);
+            if (currentLiga === 'silver') {
+                gradient.addColorStop(0, '#2d3436');
+                gradient.addColorStop(1, '#636e72');
+            } else if (currentLiga === 'gold') {
+                gradient.addColorStop(0, '#2d3436');
+                gradient.addColorStop(1, '#6c5ce7');
+            } else {
+                gradient.addColorStop(0, '#0f0c29');
+                gradient.addColorStop(1, '#302b63');
+            }
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 800, 600);
+            
+            // Border
+            ctx.strokeStyle = currentLiga === 'silver' ? '#c0c0c0' : currentLiga === 'gold' ? '#ffd700' : '#00d4ff';
+            ctx.lineWidth = 8;
+            ctx.strokeRect(20, 20, 760, 560);
+            
+            // Title
+            ctx.font = 'bold 36px Arial, sans-serif';
+            ctx.fillStyle = '#00ff88';
+            ctx.textAlign = 'center';
+            ctx.fillText('FINALE DER ERSTEN WOCHE', 400, 80);
+            
+            // Subtitle
+            ctx.font = '24px Arial, sans-serif';
+            ctx.fillStyle = '#a0a0c0';
+            ctx.fillText('Klassenliga', 400, 120);
+            
+            // Icon
+            const icons = { silver: '🥈', gold: '🥇', diamond: '💎' };
+            ctx.font = '80px Arial';
+            ctx.fillText(icons[currentLiga], 400, 220);
+            
+            // Name
+            ctx.font = 'bold 40px Arial, sans-serif';
+            ctx.fillStyle = '#00d4ff';
+            ctx.fillText(playerName, 400, 290);
+            
+            // Stats
+            ctx.font = '20px Arial, sans-serif';
+            ctx.fillStyle = '#fff';
+            ctx.fillText(`Liga: ${currentLiga === 'silver' ? 'Silber' : currentLiga === 'gold' ? 'Gold' : 'Diamant'}`, 400, 350);
+            ctx.fillText(`Punkte: ${totalPoints} / ${maxPoints} (${percentage}%)`, 400, 390);
+            ctx.fillText(`Bestanden mit mindestens 75%`, 400, 430);
+            ctx.fillText(`40 Aufgaben erfolgreich absolviert`, 400, 470);
+            
+            // Date
+            ctx.font = '16px Arial, sans-serif';
+            ctx.fillStyle = '#a0a0c0';
+            ctx.fillText(`Datum: ${new Date().toLocaleDateString('de-DE')}`, 400, 530);
+            
+            // Footer
+            ctx.fillText('Modalverben • dass/wenn-Saetze • Reflexive Verben • Praepositionen', 400, 560);
+            
+            // Download with timeout to ensure rendering
+            setTimeout(() => {
+                try {
+                    const dataURL = canvas.toDataURL('image/png');
+                    const link = document.createElement('a');
+                    link.download = `Finale_Woche1_${playerName}_${currentLiga}.png`;
+                    link.href = dataURL;
+                    document.body.appendChild(link);
+                    link.click();
+                    document.body.removeChild(link);
+                } catch (error) {
+                    console.error('Download-Fehler:', error);
+                    alert('Fehler beim Download. Bitte versuche es nochmal oder mache einen Screenshot.');
+                }
+            }, 100);
+        }
+
+        function restartGame() {
+            try {
+                // Clear any running timeout
+                if (currentTimeout) {
+                    clearTimeout(currentTimeout);
+                    currentTimeout = null;
+                }
+                
+                // Reset all variables
+                playerName = '';
+                currentLiga = '';
+                tasks = [];
+                currentTaskIndex = 0;
+                totalPoints = 0;
+                completedTasks = 0;
+                attempts = {};
+                selectedAnswer = '';
+                
+                // Reset input field
+                const nameInput = document.getElementById('playerName');
+                if (nameInput) {
+                    nameInput.value = '';
+                }
+                
+                // Show start screen
+                showScreen('startScreen');
+                
+            } catch (error) {
+                console.error('Fehler beim Zurücksetzen:', error);
+                // Fallback: Seite neu laden
+                location.reload();
+            }
+        }
+
+        function confirmHome() {
+            const confirmed = confirm('Wirklich abbrechen? Dein Fortschritt geht verloren!');
+            if (confirmed) {
+                restartGame();
+            }
+        }
+    </script>
+</body>
+</html>
